@@ -1,19 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Socket Application </title>
+    <title>Socket Application</title>
 </head>
-<body>
-   <h2>My first socket application</h2> 
-   <h1>success</h1>
+
+<body style="text-align: center;">
+    <h2>My first socket application</h2>
+    <div class="time">
+        <h1 id="myTime"></h1>
+    </div>
+
+    <form>
+        <input type="text" id="name"> <br>
+        <button onclick="send(event)" id="sent">send</button>
+    </form>
 
 
-   <script src="/socket.io/socket.io.js"></script>
-   <script>
-     let socket = io();
-   </script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        // Function to send data from the form
+        function send(event) {
+            event.preventDefault(); // Prevent form submission and page reload
+
+            let name = document.getElementById('name').value;
+            socket.send(name);
+        }
+
+        // Event listener for 'myEvent' from server
+        socket.on('myEvent', (msg) => {
+            const date = new Date(msg).toLocaleTimeString();
+            document.getElementById('myTime').innerHTML = date;
+        });
+    </script>
 </body>
+
 </html>
